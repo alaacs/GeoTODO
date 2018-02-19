@@ -1,1 +1,2 @@
-/node_modules/*
+/TODOClient/node_modules/*
+/TODOServer/node_modules/*
