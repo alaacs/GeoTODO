@@ -1,2 +1,4 @@
 /TODOClient/node_modules/*
 /TODOServer/node_modules/*
+/TODOClient/package-lock.json
+/TODOServer/package-lock.json
