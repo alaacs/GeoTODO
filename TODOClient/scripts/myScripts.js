@@ -14,8 +14,10 @@ app.controller("TheController", ["$scope", "$http", function($scope, $http) {
       }
     }
   });
+
   $scope.markers = new Array();
   $scope.$on("leafletDirectiveMap.mousedown", function (event,args) {
+
       var mouseButton = args.leafletEvent.originalEvent.button;
       if(mouseButton == 2) { // Right button
           latlng = args.leafletEvent.latlng;
@@ -35,7 +37,11 @@ app.controller("TheController", ["$scope", "$http", function($scope, $http) {
         lng: parseFloat(response.data.lon),
         message: "Hello",
         dueDate: new Date(),
-        postalAddress: response.data.display_name
+        postalAddress: response.data.display_name,
+        icon:{
+          iconUrl: '../img/tick.png',
+          iconSize:     [40, 40],
+        }
     };
     $scope.markers.push(marker);
     $scope.currentMarker = marker;
