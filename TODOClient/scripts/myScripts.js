@@ -81,4 +81,9 @@ app.controller("TheController", ["$scope", "$http", function($scope, $http) {
   {
     $scope.center = {lat: $scope.markers[index].lat, lng: $scope.markers[index].lng, zoom:15};
   }
+  $scope.toggleEditTodo = function(index){
+    var marker = $scope.markers[index];
+    if(marker)
+      marker.editingEnabled = !marker.editingEnabled;
+  }
 }]);

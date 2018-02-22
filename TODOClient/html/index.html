@@ -27,7 +27,7 @@ https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.2/leaflet.js -->
 
     <div class="container" ng-show="markers && markers.length > 0">
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-12">
           <!-- <h2>TODO list</h2> -->
           <table class="table">
             <thead>
@@ -42,23 +42,34 @@ https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.2/leaflet.js -->
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="marker in markers">
-                <td>{{marker.message}}</td>
-                <td>{{marker.dueDate | date: "dd/MM/yyyy (hh:mm)"}}</td>
-                <td>
+              <tr ng-repeat="marker in markers" >
+                <td class="col-3" ng-hide="marker.editingEnabled">{{marker.message}}</td>
+                <td class="col-3" ng-show="marker.editingEnabled">
+                  <input  type="text" class="form-control" id="txtMessage" placeholder="Message" value="" ng-model="marker.message">
+                </td>
+                <td class="col-3" ng-hide="marker.editingEnabled">{{marker.dueDate | date: "dd/MM/yyyy (hh:mm)"}}</td>
+                <td class="col-3" ng-show="marker.editingEnabled">
+                  <input type="datetime-local" placeholder="Date" ng-model="marker.dueDate">
+                </td>
+                <td class="col-3">
                   {{marker.postalAddress}}
                 </td>
-                <td>
+
+                <!-- <td>
 
                   <input src="../img/info.png" width="64" height="64" title="Info" type="image" ng-click="showInfo($index)" data-toggle="modal" data-target="#myModal"></input>
-                </td>
-                <td>
+                </td> -->
+                <td class="col-md">
 
                   <input src="../img/zoom.png" width="64" height="64" title="Zoom to" type="image" ng-click="highlightTodo($index)"></input>
                 </td>
-                <td>
+                <td  class="col">
 
                   <input src="../img/delete.png" width="64" height="64" title="Remove" type="image" ng-click="deleteTodo($index)"></input>
+                </td>
+                <td  class="col">
+
+                  <input src="../img/edit.png" width="64" height="64" title="Toggle Edit" type="image" ng-click="toggleEditTodo($index)"></input>
                 </td>
               </tr>
             </tbody>

@@ -20,3 +20,6 @@ border-spacing: 1em;
 border-color: white;
 border-style: groove;
 }
+.table tr:hover{
+  background-color: darkgrey;
+}
