@@ -18,7 +18,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.get("/todos", function(req, res) {
+app.get("/todos", function(req, res, next) {
     //var stream = todo.find().stream();
     //var results = {};
     todo.find(function(err, results){
