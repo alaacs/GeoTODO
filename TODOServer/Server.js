@@ -19,16 +19,19 @@ app.use(function(req, res, next) {
 });
 
 app.get("/todos", function(req, res) {
-    var stream = todo.find().stream();
-    var results = {};
-    stream.on('data', function(doc) {
-            results[doc.id] = doc;
-        }).on("error", function(err) {
+    //var stream = todo.find().stream();
+    //var results = {};
+    todo.find(function(err, results){
+      if(err) {
             res.status(500);
-            next(err);
-        }).on('close', function() {
+            next("Internal server error.");
+        } else if(results == null || results.length == 0) {
+            res.status(404); // Not found
+            next("No TODOs found in the DB");
+        } else {
             res.status(200);
             res.json(results);
+        }
     });
 });
 
