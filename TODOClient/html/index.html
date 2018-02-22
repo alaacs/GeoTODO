@@ -9,28 +9,36 @@
   <script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
   <script src="../node_modules/angular/angular.js"></script>
   <script src="../node_modules/leaflet/dist/leaflet.js"></script>
+  <link rel="stylesheet" type="text/css" href="../css/style.css" />
 
   <!-- https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.2/leaflet.css
 https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.2/leaflet.js -->
 
   <script src="../node_modules/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
   <script src="../scripts/myScripts.js"></script>
-  <title>My first AngularJS and Leaflet map</title>
+  <title>GeoToDo App</title>
 </head>
 
 <body ng-controller="TheController as theController">
   <div class="container">
-    <h1>My first Angular and Leaftlet map</h1>
+    <h1>GeoToDo App</h1>
+    <h3>By Alaa, Daniel, Fabian and Vanesa</h3>
     <leaflet  tiles="tiles" lf-center="center" markers="markers" height="480px" width="100%"></leaflet>
 
-    <div class="container">
+    <div class="container" ng-show="markers && markers.length > 0">
       <div class="row">
         <div class="col-md-12">
-          <h2>TODO list</h2>
+          <!-- <h2>TODO list</h2> -->
           <table class="table">
             <thead>
               <tr>
                 <th>Message</th>
+                <th>
+                  Date
+                </th>
+                <th>
+                  Detailed address
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -40,12 +48,17 @@ https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.2/leaflet.js -->
                 <td>
                   {{marker.postalAddress}}
                 </td>
-                <td><button class="btn btn-info" ng-click="showInfo($index)" data-toggle="modal" data-target="#myModal">Info</button> </td>
                 <td>
-                  <button class="btn btn-info" ng-click="highlightTodo($index)">Show</button>
+
+                  <input src="../img/info.png" width="64" height="64" title="Info" type="image" ng-click="showInfo($index)" data-toggle="modal" data-target="#myModal"></input>
                 </td>
                 <td>
-                  <button class="btn btn-danger" ng-click="deleteTodo($index)">Remove</button>
+
+                  <input src="../img/zoom.png" width="64" height="64" title="Zoom to" type="image" ng-click="highlightTodo($index)"></input>
+                </td>
+                <td>
+
+                  <input src="../img/delete.png" width="64" height="64" title="Remove" type="image" ng-click="deleteTodo($index)"></input>
                 </td>
               </tr>
             </tbody>
