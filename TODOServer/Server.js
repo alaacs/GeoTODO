@@ -53,6 +53,60 @@ app.get("/todos/:id", function(req, res, next) {
     });
 });
 
+app.post("/todos", function(req, res, next) {
+  console.log(req.body);
+  const idTodo = req.body.id;
+  const todo = req.body;
+
+  todo.findOne({
+    id: idTodo
+  }, function(err, todo) {
+    if (err) {
+      res.status(500);
+      next("Internal server error.");
+    } else if (todo != null) {
+      res.status(400);
+      res.send("Todo already exists");
+    } else {
+
+    }
+  });
+
+  todo.create({
+    todo,
+    function(err, result) {
+      if (err) {
+        res.status(500);
+        next("Internal server error.");
+      } else {
+        res.status(201);
+        res.set("Location", "http://localhost:2000/todos/" + idTodo)
+        res.send()
+        next("New todo added to the list.");
+      }
+    }
+  });
+});
+
+
+app.delete("/todos/:id", function(req, res, next) {
+  var idTodo = req.params.id;
+  todo.remove({
+    "id": idTodo
+  }, function(err, result) {
+    if (err) {
+      res.status(500);
+      res.send();
+    } else if (result.n == 0) {
+      res.status(404);
+      next("Product with id: " + idTodo + " is not in our catalog.");
+    } else {
+      res.status(200)
+      res.send();
+    }
+  })
+});
+
 
 var server = app.listen(port, function() {
   console.log('Server running at http://127.0.0.1:' + port);
