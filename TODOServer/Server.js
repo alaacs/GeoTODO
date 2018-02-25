@@ -35,22 +35,23 @@ app.get("/todos", function(req, res, next) {
     });
 });
 
-// app.get("/todos/:id", function(req, res, next) {
-//     var idTodo = req.params.id;
-//
-//     todo.findOne({id: idTodo}, function(err,result) {
-//         if(err) {
-//             res.status(500);
-//             next("Internal server error.");
-//         } else if(result == null) {
-//             res.status(404); // Not found
-//             next("No Todo with code " + idTodo + " found.");
-//         } else {
-//             res.status(200);
-//             res.json(result);
-//         }
-//     });
-// });
+app.get("/todos/:id", function(req, res, next) {
+    var idTodo = req.params.id;
+    console.log(req.params)
+
+    todo.findOne({id: idTodo}, function(err,result) {
+        if(err) {
+            res.status(500);
+            next("Internal server error.");
+        } else if(result == null) {
+            res.status(404); // Not found
+            next("No Todo with code " + idTodo + " found.");
+        } else {
+            res.status(200);
+            res.json(result);
+        }
+    });
+});
 
 
 var server = app.listen(port, function() {
