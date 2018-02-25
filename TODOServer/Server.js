@@ -35,10 +35,10 @@ app.get("/todos", function(req, res, next) {
     });
 });
 
-app.get("/todos/:id", function(req, res, next) {
-    var idTodo = req.params.id;
-
-    todo.findOne({id: idTodo}, function(err,result) {
+app.get("/todos/:_id", function(req, res, next) {
+    var idTodo = req.params._id;
+    console.log(idTodo)
+    todo.findOne({"_id": idTodo}, function(err,result) {
         if(err) {
             res.status(500);
             next("Internal server error.");
@@ -54,49 +54,33 @@ app.get("/todos/:id", function(req, res, next) {
 
 app.post("/todos", function(req, res, next) {
 
-  var idNewTodo = req.body.id;
-  //console.log("Id: " + idTodo);
-//  const newTodo = req.body;
+  // var idNewTodo = req.body._id;
+  // console.log("Id: " + idTodo);
+  //  const newTodo = req.body;
 
   console.log(req.body);
-  console.log(req.body.id);
 
-  todo.findOne({
-    id:  idNewTodo
-  }, function(err, result) {
-    if (err) {
-      res.status(500);
-      next("Internal server error.");
-    } else if (result != null) {
-      res.status(400);
-      res.send("Todo already exists");
-    } else {
-      res.status(200);
-      todo.create(
-         req.body,
-        function(err, result) {
-          if (err) {
-            res.status(500);
-            next("Internal server error.");
-          } else {
-            res.status(201);
-            res.set("Location", "http://localhost:2000/todos/" + idNewTodo)
-            res.send()
-            next("New todo added to the list.");
-          }
-        }
-      );
+  todo.create(
+    req.body,
+    function(err, result) {
+      if (err) {
+        res.status(500);
+        next("Internal server error.");
+      } else {
+        res.status(201);
+        res.set("Location", "http://localhost:2000/todos/")
+        res.send()
+        next("New todo added to the list.");
+      }
     }
-  });
-
-
+  );
 });
 
 
-app.delete("/todos/:id", function(req, res, next) {
-  var idTodo = req.params.id;
+app.delete("/todos/:_id", function(req, res, next) {
+  var idTodo = req.params._id;
   todo.remove({
-    "id": idTodo
+    _id: idTodo
   }, function(err, result) {
     if (err) {
       res.status(500);
