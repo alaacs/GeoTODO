@@ -37,7 +37,6 @@ app.get("/todos", function(req, res, next) {
 
 app.get("/todos/:id", function(req, res, next) {
     var idTodo = req.params.id;
-    console.log(req.params)
 
     todo.findOne({id: idTodo}, function(err,result) {
         if(err) {
@@ -54,38 +53,43 @@ app.get("/todos/:id", function(req, res, next) {
 });
 
 app.post("/todos", function(req, res, next) {
+
+  var idNewTodo = req.body.id;
+  //console.log("Id: " + idTodo);
+//  const newTodo = req.body;
+
   console.log(req.body);
-  const idTodo = req.body.id;
-  const todo = req.body;
+  console.log(req.body.id);
 
   todo.findOne({
-    id: idTodo
-  }, function(err, todo) {
+    id:  idNewTodo
+  }, function(err, result) {
     if (err) {
       res.status(500);
       next("Internal server error.");
-    } else if (todo != null) {
+    } else if (result != null) {
       res.status(400);
       res.send("Todo already exists");
     } else {
-
+      res.status(200);
+      todo.create(
+         req.body,
+        function(err, result) {
+          if (err) {
+            res.status(500);
+            next("Internal server error.");
+          } else {
+            res.status(201);
+            res.set("Location", "http://localhost:2000/todos/" + idNewTodo)
+            res.send()
+            next("New todo added to the list.");
+          }
+        }
+      );
     }
   });
 
-  todo.create({
-    todo,
-    function(err, result) {
-      if (err) {
-        res.status(500);
-        next("Internal server error.");
-      } else {
-        res.status(201);
-        res.set("Location", "http://localhost:2000/todos/" + idTodo)
-        res.send()
-        next("New todo added to the list.");
-      }
-    }
-  });
+
 });
 
 
