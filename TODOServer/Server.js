@@ -68,14 +68,56 @@ app.post("/todos", function(req, res, next) {
         next("Internal server error.");
       } else {
         res.status(201);
-        res.set("Location", "http://localhost:2000/todos/")
-        res.send()
-        next("New todo added to the list.");
+        var newObj = result._doc;
+        newObj._id = result.id;
+        res.json(newObj);
+        //res.set("Location", "http://localhost:2000/todos/")
+        //res.send()
+        //next("New todo added to the list.");
       }
     }
   );
 });
 
+app.put("/todos", function(req, res, next) {
+  const idTodo = req.body._id;
+  todo.findOne({"_id": idTodo}, function(err, result) {
+    if(err) {
+        res.status(500);
+        next("Internal server error.");
+    } else if(result == null) {
+        res.status(404); // Not found
+        next("No Todo with code " + idTodo + " found.");
+    } else {
+        result.title = req.body.title;
+        result.lat = req.body.lat;
+        result.lng = req.body.lng;
+        result.due_date = req.body.due_date;
+        result.postal_address = req.body.postal_address;
+        result.save(function(err1, updatedTodo)
+        {
+          if(err1) {
+              res.status(500);
+              next("Internal server error.");
+          }
+          else
+          {
+            res.status(200);
+            res.json(updatedTodo);
+          }
+        })
+    }
+  });
+  // if (id in catalog) { //ok
+  //   catalog[id] = res.body;
+  //   res.status(204);
+  //   res.send();
+  // } else {
+  //   res.status(400);
+  //   next("");
+  //
+  // }
+});
 
 app.delete("/todos/:_id", function(req, res, next) {
   var idTodo = req.params._id;

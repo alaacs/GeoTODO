@@ -5,6 +5,8 @@ var todo = db.model('todos', {
     title: {type: String, required: true},
     lat: {type: Number, required: true},
     lng: {type: Number, required: true},
+    due_date: {type: Date},
+    postal_address:{type:String}
 
 });
 
