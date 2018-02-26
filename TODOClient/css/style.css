@@ -23,3 +23,13 @@ border-style: groove;
 .table tr:hover{
   background-color: darkgrey;
 }
+.norightpadding{
+  padding-right: 0px!important;
+}
+.leaflet-container.crosshair-cursor-enabled {
+    cursor:crosshair;
+}
+.leaflet-container{
+  margin-bottom: 15px;
+  margin-top: 15px;
+}

@@ -23,10 +23,45 @@ https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.2/leaflet.js -->
   <div class="container">
     <h1>GeoToDo App</h1>
     <h3>By Alaa, Daniel, Fabian and Vanesa</h3>
-    <leaflet  tiles="tiles" lf-center="center" markers="markers" height="480px" width="100%"></leaflet>
+    <div class="row">
+      <div class="col-md-6">
 
-    <div class="container" ng-show="markers && markers.length > 0">
-      <div class="row">
+        <button type="button" class="btn btn-outline-primary btn-block" ng-click="btnShowAllMarkers()">Show all markers</button>
+        <leaflet tiles="tiles" lf-center="center" markers="markers" height="480px" width="100%"></leaflet>
+
+          <button type="button" class="btn btn-outline-primary btn-block" ng-click="btnEnableAddClicked()">Click here to add a new TODO</button>
+
+
+        <div id="divNewTodo" ng-show="isAddMode || isUpdateMode">
+          <div class="mb-3">
+            <label for="todoMessage">Message
+              <!-- <span class="text-muted">(Optional)</span> -->
+            </label>
+            <input type="text" ng-model="currentMarker.title" class="form-control" id="todoMessage" placeholder="type your Todo message here">
+          </div>
+          <div class="mb-3">
+            <label for="todoDate">Date
+              <!-- <span class="text-muted">(Optional)</span> -->
+            </label>
+            <input type="date"  ng-model="currentMarker.due_date" class="form-control" id="todoDate" placeholder="enter your Todo date here" />
+            <label for="todoAddress">Address
+              <!-- <span class="text-muted">(Optional)</span> -->
+            </label>
+            <p class="form-control" id="todoAddress">{{currentMarker.postal_address}}</p>
+            <!-- <input type="text" class="form-control" id="divTodoDate" placeholder="type your Todo Message here"> -->
+          </div>
+          <!-- <div class="col-md-6 norightpadding"> -->
+
+
+              <button type="button" class="form-control btn-block btn .btn-sm btn-outline-warning" ng-click = "btnUpdateTodo()" ng-show = "isUpdateMode">Update</button>
+              <button type="button" class="form-control btn-block btn .btn-sm btn-outline-success" ng-click = "btnAddTodo()" ng-show = "isAddMode">Add new</button>
+              <button type="button" class="form-control btn-block btn .btn-sm btn-outline-secondary" ng-click = "btnCancelEditing()">Cancel</button>
+          <!-- </div> -->
+
+        </div>
+      </div>
+      <div class="col-md-6" ng-show="markers && markers.length > 0">
+
         <div class="col-12">
           <!-- <h2>TODO list</h2> -->
           <table class="table">
@@ -42,57 +77,59 @@ https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.2/leaflet.js -->
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="marker in markers" >
-                <td class="col-3" ng-hide="marker.editingEnabled">{{marker.title}}</td>
-                <td class="col-3" ng-show="marker.editingEnabled">
-                  <input  type="text" class="form-control" id="txtMessage" placeholder="Message" value="" ng-model="marker.message">
+              <tr ng-repeat="marker in markers | filter : { isNew : '!' }">
+                <td class="col-6" ng-hide="marker.editingEnabled">{{marker.title}}</td>
+                <td class="col-6" ng-show="marker.editingEnabled">
+                  <input type="text" class="form-control" id="txtMessage" placeholder="Message" value="" ng-model="marker.message">
                 </td>
-                <td class="col-3" ng-hide="marker.editingEnabled">{{marker.due_date | date: "dd/MM/yyyy (hh:mm)"}}</td>
-                <td class="col-3" ng-show="marker.editingEnabled">
+                <td class="col-6" ng-hide="marker.editingEnabled">{{marker.due_date | date: "dd/MM/yyyy (hh:mm)"}}</td>
+                <td class="col-6" ng-show="marker.editingEnabled">
                   <input type="datetime-local" placeholder="Date" ng-model="marker.dueDate">
                 </td>
-                <td class="col-3">
-                  {{marker.postalAddress}}
+                <td class="col-6">
+                  {{marker.postal_address}}
                 </td>
 
                 <!-- <td>
 
                   <input src="../img/info.png" width="64" height="64" title="Info" type="image" ng-click="showInfo($index)" data-toggle="modal" data-target="#myModal"></input>
                 </td> -->
-                <td class="col-md">
 
-                  <input src="../img/zoom.png" width="64" height="64" title="Zoom to" type="image" ng-click="highlightTodo($index)"></input>
+                <td class="col">
+
+                  <input src="../img/zoom.png" width="32" height="32" title="Zoom to" type="image" ng-click="highlightTodo($index)"></input>
                 </td>
-                <td  class="col">
+                <td class="col">
 
-                  <input src="../img/delete.png" width="64" height="64" title="Remove" type="image" ng-click="deleteTodo($index)"></input>
+                  <input src="../img/delete.png" width="32" height="32" title="Remove" type="image" ng-click="deleteTodo($index)"></input>
                 </td>
-                <td  class="col">
+                <td class="col">
 
-                  <input src="../img/edit.png" width="64" height="64" title="Toggle Edit" type="image" ng-click="toggleEditTodo($index)"></input>
+                  <input src="../img/edit.png" width="32" height="32" title="Toggle Edit" type="image" ng-click="toggleEditTodo($index)"></input>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
+
       </div>
-    </div>
-    <!-- Modal Window -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title" id="myModalLabel">Info</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          </div>
-          <div class="modal-body">
-            <p>Change the item here:</p>
-            <p>Message:<input type="text" ng-model="currentMarker.message"></p>
-            <p>Address:{{currentMarker.postalAddress}}</p>
-            <p><input type="datetime-local" ng-model="currentMarker.dueDate"></p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      <!-- Modal Window -->
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="myModalLabel">Info</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+              <p>Change the item here:</p>
+              <p>Message:<input type="text" ng-model="currentMarker.message"></p>
+              <p>Address:{{currentMarker.postalAddress}}</p>
+              <p><input type="datetime-local" ng-model="currentMarker.dueDate"></p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
           </div>
         </div>
       </div>
