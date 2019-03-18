@@ -55,6 +55,9 @@ To install and run GeoTODO the following software need to be installed locally:
 
 ## Authors
 Alaa B. Abdelfattah ([alaa.cs@hotmail.com](mailto:alaa.cs@hotmail.com))
+
 Fabian Perotti ([al376286@uji.es](mailto:al376286@uji.es))
+
 Vanesa Peréz Sancho ([vanesa.perez.sancho@gmail.com](mailto:vanesa.perez.sancho@gmail.com))
+
 Daniel Marsh-Hunn ([al373405@uji.es](mailto:al373405@uji.es))
